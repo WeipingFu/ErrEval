@@ -7,7 +7,7 @@ At the core of ErrEval is a lightweight, plug-and-play Error Identifier that det
 Experiments show that a RoBERTa-based Error Identifier trained with an iterative strategy outperforms zero-shot LLM-based baselines by up to 27.7\% in relative micro-F1. Moreover, integrating ErrEval into multiple LLM evaluators improves their alignment with human judgments and reduces the overestimation of low-quality questions.
 
 ## Framework
-[framework](./figures/framework.pdf)
+![framework](./figures/framework.png)
 
 ## Usage
 For usage instructions, please refer to the following files.
