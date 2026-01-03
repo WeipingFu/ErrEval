@@ -7,6 +7,10 @@
 - [SQuAD2.0](./squad-1k.xlsx), a reading comprehension dataset containing both answerable and unanswerable questions, enabling evaluation of the answerability dimension in question generation.
 
 
+### Pilot Set
+- [pilot_set](./sample-300.xlsx), the dataset used for our pilot study consists of samples accompanied by human-annotated error labels.
+
+
 ### Error Seed
 - [seed](./samples_for_simulation.xlsx), is the example seeds we use for error simulation.
 
