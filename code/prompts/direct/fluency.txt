@@ -1,0 +1,29 @@
+[Task Description]
+You will be given a passage, an answer, and a generated question. Your task is to decide whether the question meets one specific requirement and rate it on a scale of 1 to 3 using the provided scoring criteria, and give your reason.
+
+
+[Requirement]
+Fluency: Whether the question is grammatically correct, coherent, and fluent enough to be understood.
+
+
+[Scoring criteria]
+Score 1: The question is incoherent, with imprecise wording or significant grammatical errors, making it difficult to comprehend its meaning;
+Score 2: The question is slightly incoherent or contains minor grammatical errors, but it does not hinder the understanding of the question's meaning;
+Score 3: The question is fluent and grammatically correct.
+
+
+[Evaluation Steps]
+1. Verify Fluency: Check whether the question is grammatically correct, uses natural language, and is easy to read and understand.
+2. Assign a Score: Rate the question according to the scoring criteria.
+3. Justify the Score: Provide a clear and concise explanation, referencing the question, passage and the reasoning behind your rating.
+
+
+[Input]
+Passage: #passage
+Answer: #answer
+Generated Question: #question
+
+
+[Output]
+score: [Your score]  
+reason: [Your reason here]

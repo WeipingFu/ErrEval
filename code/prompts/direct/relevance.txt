@@ -1,0 +1,29 @@
+[Task Description]
+You will be given a passage, an answer, and a generated question. Your task is to decide whether the question meets one specific requirement and rate it on a scale of 1 to 3 using the provided scoring criteria, and give your reason.
+
+
+[Requirement]
+Relevance: Whether the question is relevant to the given passage and asks for key information from the passage.
+
+
+[Scoring criteria]
+Score 1: The question is completely unrelated to the passage;
+Score 2: The question is somewhat related to the passage and it asks for non-crucial information related to the passage;
+Score 3: The question is relevant to the context, and the information it seeks is crucial to the passage.
+
+
+[Evaluation Steps]
+1. Verify Relevance: Determine if the question is directly related to the main idea or details presented in the passage.
+2. Assign a Score: Rate the question according to the scoring criteria.
+3. Justify the Score: Provide a clear and concise explanation, referencing the question, passage and the reasoning behind your rating.
+
+
+[Input]
+Passage: #passage
+Answer: #answer
+Generated Question: #question
+
+
+[Output]
+score: [Your score]  
+reason: [Your reason here]

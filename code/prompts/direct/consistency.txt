@@ -1,0 +1,29 @@
+[Task Description]
+You will be given a passage, an answer, and a generated question. Your task is to decide whether the question meets one specific requirement and rate it on a scale of 1 to 3 using the provided scoring criteria, and give your reason.
+
+
+[Requirement]
+Consistency: Whether the information presented in the question is consistent with the passage and without any contradictions or hallucinations.
+
+
+[Scoring criteria]
+Score 1: The question contains factual contradictions with the passage or logical errors;
+Score 2: The information sought in the question is not fully described in the passage;
+Score 3: The information in the question is entirely consistent with the passage.
+
+
+[Evaluation Steps]
+1. Verify Consistency: Check whether all factual claims made in the question are consistent with the information presented in the passage.
+2. Assign a Score: Rate the question according to the scoring criteria.
+3. Justify the Score: Provide a clear and concise explanation, referencing the question, passage and the reasoning behind your rating.
+
+
+[Input]
+Passage: #passage
+Answer: #answer
+Generated Question: #question
+
+
+[Output]
+score: [Your score]  
+reason: [Your reason here]

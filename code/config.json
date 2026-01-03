@@ -1,0 +1,13 @@
+{
+    "evaluator_name": "gpt-4o",
+    "evaluator_type": "close",
+    "evaluator_path": "../model/pretrained_model/llama-3-8b-instruct",
+    "tokenizer_path": "../model/pretrained_model/llama-3-8b-instruct",
+    "prompt_dir": "./prompts/direct/",
+    "error_aware": false,
+    "error_model_path": "../model/error_label/roberta-base",
+    "error_tokenizer_path": "../model/pretrained_model/roberta-base",
+    "max_new_tokens": 256,
+    "enable_thinking": false,
+    "do_sample": true
+}

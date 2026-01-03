@@ -1,0 +1,29 @@
+[Task Description]
+You will be given a passage, an answer, and a generated question. Your task is to decide whether the question meets one specific requirement and rate it on a scale of 1 to 3 using the provided scoring criteria, and give your reason.
+
+
+[Requirement]
+Answerability: Whether the question can be distinctly answered based on the passage. 
+
+
+[Scoring criteria]
+Score 1: The question cannot be answered based on the provided passage;
+Score 2: The question can be partially answered based on the provided passage or the answer to the question can be inferred to some extent;
+Score 3: The question can be answered definitively based on the given passage.
+
+
+[Evaluation Steps]
+1. Verify Answerability: Determine if the question can be explicitly answered or reasonably inferred from the passage.
+2. Assign a Score: Rate the question according to the scoring criteria.
+3. Justify the Score: Provide a clear and concise explanation, referencing the question, passage and the reasoning behind your rating.
+
+
+[Input]
+Passage: #passage
+Answer: #answer
+Generated Question: #question
+
+
+[Output]
+score: [Your score]  
+reason: [Your reason here]

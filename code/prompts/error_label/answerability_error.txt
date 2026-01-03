@@ -1,0 +1,32 @@
+[Task Description]
+You will be given a passage, an answer, a generated question, and a list of pre-identified errors relevant to answerability. Your task is to determine whether the question is answerable based on the passage, assign a score from 1 to 3, and give your reason.
+
+
+[Requirement]
+Answerability: Whether the question can be distinctly answered based on the passage. 
+
+
+[Scoring criteria]
+Score 1: The question cannot be answered based on the provided passage;
+Score 2: The question can be partially answered based on the provided passage or the answer to the question can be inferred to some extent;
+Score 3: The question can be answered definitively based on the given passage.
+
+
+[Evaluation Steps]
+1. Consider Error Labels (if provided): Review the error labels related to this dimension, but note that they may not be fully accurate and should only be used as a reference.
+2. Verify Answerability: Determine if the question can be explicitly answered or reasonably inferred from the passage.
+3. Assign a Score: Rate the question according to the scoring criteria.
+4. Justify the Score: Provide a clear and concise explanation, referencing the question, passage and the reasoning behind your rating.
+
+
+[Input]  
+Passage: #passage  
+Answer: #answer  
+Generated Question: #question  
+Relevant Error Labels: 
+#error
+
+
+[Output]
+score: [Your score]  
+reason: [Your reason here]

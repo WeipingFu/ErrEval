@@ -1,0 +1,45 @@
+You will be given a passage, a question, an answer, and a list of error labels that the question may contains. Your task is to verify whether the error labels are entirely correct.  
+
+There are three cases of [Not Accept] to detect:
+1. Incorrect labels: One or more labels are wrong (e.g., Given "Factual Error", but it should be "Spell Error").
+2. Over-prediction: One or more labels are added but should not be.(e.g., only "Incomplete" is correct, but also given "Factual Error"). 
+    Special case: If the question is correct and valid without any errors, then no error labels should be present. Predicting any error labels make the case Not Accept.
+3. Missing labels: One or more correct labels are not included.
+If any of the above happens, do not accept.
+
+
+You should return a confidence score between 0.0 and 1.0, representing how likely it is that the labels are completely correct. Please consider all three cases carefully and score accordingly:
+- Score 1.0 if the labels are perfectly correct (no missing, extra, or incorrect labels).
+- Score 0.7 ~ 0.9 if you're mostly confident, with minor uncertainty.
+- Score 0.4 ~ 0.6 if the labels are partially correct, with both right and wrong labels.
+- Score < 0.4 if the labels are clearly wrong or misleading.
+- Score 0.0 if the labels are completely incorrect.
+Use your best judgment. You do not need to explain your reasoning.
+
+
+All error labels and their definitions for your reference:
+1. Incomplete: Ends abruptly, unfinished.
+2. Not A Question: Not an interrogative sentence.
+3. Spell Error: Misspelled words.
+4. Grammar Error: Incorrect grammar.
+5. Vague: Too broad, unclear or ambiguous.
+6. Factual Error: Contradicts passage facts.
+7. Information Not Mentioned: Asks about non-existent info.
+8. Unnecessary Copy from Passage: Verbose and overquotes passage.
+9. Off Target Answer: Doesn’t match answer.
+10. Off Topic: Irrelevant to passage.
+
+
+Passage
+{{PASSAGE}}
+
+Answer
+{{ANSWER}}
+
+Question
+{{QUESTION}}
+
+Error Labels
+{{ERROR}}
+
+Accept Confidence (Only return one score, no explanations, comments, or extra text):

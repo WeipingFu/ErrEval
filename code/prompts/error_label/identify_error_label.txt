@@ -1,0 +1,39 @@
+[Task Description]
+You will be given a passage, an answer, a generated question, your task is to identify the error types that presented in the generated question, according to the following list of error types.
+
+
+[List of Error Types]
+1. Incomplete: The question ends abruptly and is clearly unfinished.
+2. Not A Question: The sentence is not actually an interrogative sentence.
+3. Spell Error: There are misspelled words.
+4. Grammar Error: The question contains grammatical mistakes.
+5. Vague: The question is unclear, too broad, or ambiguous.
+6. Factual Error: It contradicts factual information in the passage.
+7. Information Not Mentioned: The question asks about information not present in the passage.
+8. Unnecessary Copy from Passage: It overquotes or redundantly copies the passage.
+9. Off Target Answer: The question does not align with the given answer.
+10. Off Topic: The question is irrelevant to the passage.
+11. No Error: The question is valid and has no errors.
+
+
+[Important]
+1. The question may contain multiple error types.
+2. Avoid overpredicting errors. Only label what you can justify with high confidence.
+3. If there is no error identified, output only: No Error.
+4. Your final response must be a single-line string with error types separated by semicolons like "Grammar Error; Vague". Do not include explanations, line breaks, bullet points or any extra texts.
+
+
+[Input]
+Passage:
+#passage
+
+Answer:
+#answer
+
+Generated Question:
+#question
+
+
+[Output]
+Identified labels: 
+[Your labels here]
