@@ -114,7 +114,7 @@ class ErrEval:
         score = get_score(output_text)
         return output_text, score
     
-    
+
     # apply evaluation
     def eval(self, p, q, a, dimension):
         reponse, score = None, 999
@@ -149,6 +149,8 @@ class ErrEval:
                 reponse, score = self.generate_and_score(messages, device)
         elif evaluator_type == 'close':
             template_path = self.config['prompt_dir']+'/{}.txt'.format(dimension)
+            if self.config.get('error_aware'):
+                template_path = self.config['prompt_dir']+'/{}_error.txt'.format(dimension)
             reponse, score = self.evaluator.request_one(evaluator_name, p, q, a, dimension, template_path, error=error_label, prt=False)
         else:
             print('Model type {} is not supported!'.format(evaluator_type))
