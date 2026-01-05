@@ -26,15 +26,17 @@ This evaluation framework supports multiple evaluators and error identifier mode
 {
     "evaluator_name": "gpt-4o",   
     "evaluator_type": "close",
-    "evaluator_path": "../model/pretrained_model/llama-3-8b-instruct",
-    "tokenizer_path": "../model/pretrained_model/llama-3-8b-instruct",
+    "evaluator_path": "",
+    "tokenizer_path": "",
     "prompt_dir": "./prompts/direct/",
-    "error_aware": false,
-    "error_model_path": "../model/error_label/roberta-base",
-    "error_tokenizer_path": "../model/pretrained_model/roberta-base",
+    "error_aware": true,
+    "error_model_path": "../model/error_label/erreval_base",
+    "error_tokenizer_path": "../model/error_label/erreval_base",
     "max_new_tokens": 256,
     "enable_thinking": false,
-    "do_sample": true
+    "do_sample": true,
+    "base_url": "your base url",
+    "api_key": "your api key"
 }
 ```
 ### Field Descriptions
@@ -52,9 +54,8 @@ This evaluation framework supports multiple evaluators and error identifier mode
 | `max_new_tokens`      | `int`    | The maximum number of tokens to generate during evaluation.                |
 | `enable_thinking`     | `bool`   | Whether to enable "thinking" mode.      |
 | `do_sample`           | `bool`   | Whether to use sampling during generation (if `false`, greedy decoding).   |
-
-
-Note: for close-source evalutors, please modify the `apply_api.py` to set your api_key or add new models except for `gpt` and `claude` to conduct evaluation. 
+| `base_url`           | `string`   | Your base url for request a close-source evaluator, such as gpt-4o.  |
+| `api_key`           | `string`   | Your api_key for request a close-source evaluator.   |
 
 
 ## Other Code Files
