@@ -21,24 +21,46 @@ Modify `config.json` to configure the evaluator and error identifier settings ac
     print(erreval.eval(p, q, a, dimension))
 ```
 ##  Configuration Guide for `config.json`
-This evaluation framework supports multiple evaluators and error identifier models. You can flexibly configure them via the `config.json` file. Below is a sample configuration along with detailed explanations of each field.
+This evaluation framework supports multiple evaluators and error identifier models. You can flexibly configure them via the `config.json` file. 
+
+### Vanilla CoT Evaluation (Example)
 ```json
 {
     "evaluator_name": "llama",
     "evaluator_type": "open",
     "evaluator_path": "../model/llama-3-8b-instruct",
     "tokenizer_path": "../model/llama-3-8b-instruct",
-    "prompt_dir": "./prompts/error_label/",
+    "prompt_dir": "./prompts/direct/",
+    "error_aware": false,
+    "error_model_path": "",
+    "error_tokenizer_path": "",
+    "max_new_tokens": 256,
+    "enable_thinking": false,
+    "do_sample": true,
+    "base_url": "",
+    "api_key": ""
+}
+```
+
+### Error-aware Evaluation (Example)
+```json
+{
+    "evaluator_name": "llama",
+    "evaluator_type": "open",
+    "evaluator_path": "../model/llama-3-8b-instruct",
+    "tokenizer_path": "../model/llama-3-8b-instruct",
+    "prompt_dir": "./prompts/direct/",
     "error_aware": true,
     "error_model_path": "../model/error_label/erreval_base",
     "error_tokenizer_path": "../model/error_label/erreval_base",
     "max_new_tokens": 256,
     "enable_thinking": false,
     "do_sample": true,
-    "base_url": "your base url for request",
-    "api_key": "your api key"
+    "base_url": "",
+    "api_key": ""
 }
 ```
+
 ### Field Descriptions
 
 | Field Name            | Type     | Description                                                                 |
