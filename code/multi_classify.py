@@ -16,6 +16,7 @@ from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
 from utils import ensure_directory_exists
+import os
 
 
 # Settings
@@ -294,7 +295,6 @@ if __name__ == "__main__":
 
     # predict
     df = pd.read_excel('../data/test/qgeval.xlsx')
-    # df = pd.read_excel('../data/filter.xlsx')
     model_type = 'roberta'
     model_size = 'base'
     iter_count = 3
@@ -307,6 +307,5 @@ if __name__ == "__main__":
     ]
     thresholds = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
     output_file = '../result/test/iter{}/{}-{}/qgeval-el.xlsx'.format(str(iter_count), model_type, model_size)
-    # output_file = '../data/iter{}/filter-{}-{}.xlsx'.format(str(iter_count), model_type, model_size)
     mlb.fit([[label] for label in LABEL_LIST])
     predict_and_save_texts_only(df, model_path, tokenizer_path, texts, mlb, thresholds=thresholds, output_file=output_file, col_name='pred_error', need_prob=False)
