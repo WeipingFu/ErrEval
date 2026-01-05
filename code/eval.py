@@ -16,6 +16,7 @@ from apply_api import ApplyAPI
 class ErrEval:
     def __init__(self, config_path):
         # load config file
+        self.config_path = config_path
         self.config = load_json(config_path)
 
     # load Error Identifier
@@ -37,7 +38,7 @@ class ErrEval:
             self.evaluator = AutoModelForCausalLM.from_pretrained(self.config['evaluator_path']).to(device)
             self.tokenizer = AutoTokenizer.from_pretrained(self.config['tokenizer_path'])
         elif evaluator_type == 'close':
-            self.evaluator = ApplyAPI()
+            self.evaluator = ApplyAPI(self.config_path)
         else:
             print('Model type {} is not supported!'.format(evaluator_type))
 
@@ -45,6 +46,7 @@ class ErrEval:
             self.tokenizer.add_special_tokens({"pad_token": "<PAD>",})
             LLAMA_3_CHAT_TEMPLATE="{% set loop_messages = messages %}{% for message in loop_messages %}{% set content = '<|start_header_id|>' + message['role'] + '<|end_header_id|>\n\n'+ message['content'] | trim + '<|eot_id|>' %}{% if loop.index0 == 0 %}{% set content = bos_token + content %}{% endif %}{{ content }}{% endfor %}{% if add_generation_prompt %}{{ '<|start_header_id|>assistant<|end_header_id|>\n\n' }}{% endif %}"
             self.tokenizer.chat_template = LLAMA_3_CHAT_TEMPLATE
+
 
     # conduct error identification
     def error_identify(self, p, q, a, device):
@@ -63,12 +65,18 @@ class ErrEval:
         pred_labels = self.mlb.inverse_transform(pred_binary)
         return '; '.join(pred_labels[0]) if pred_labels[0] else ''
     
+
     # open evaluator predict
     def generate_and_score(self, messages, device, **kwargs):
+        
+        print("enable_thinking:", self.config['enable_thinking'])  
+
         chat_template_args = {
-            "messages": messages,
+            "conversation": messages,
             "add_generation_prompt": True,
-            "return_tensors": "pt"
+            "return_tensors": "pt",
+            "return_dict": True,
+            "enable_thinking": self.config['enable_thinking']   
         }
 
         model_inputs = self.tokenizer.apply_chat_template(**chat_template_args)
@@ -76,11 +84,12 @@ class ErrEval:
         if device is None:
             device = self.evaluator.device
         model_inputs = model_inputs.to(device)
-
+        
         eos_token_ids = kwargs.pop("eos_token_id", [
             self.tokenizer.eos_token_id,
             self.tokenizer.convert_tokens_to_ids("<|eot_id|>")
         ])
+        eos_token_ids = [token for token in eos_token_ids if token is not None]
         pad_token_id = kwargs.pop("pad_token_id", self.tokenizer.pad_token_id)
 
         # generate
@@ -97,11 +106,18 @@ class ErrEval:
             skip_special_tokens=True
         ).strip()
         score = get_score(output_text)
+        
+        output_text = self.tokenizer.decode(
+                outputs[0][model_inputs["input_ids"].shape[-1]:],
+                skip_special_tokens=True
+            ).strip()
+        score = get_score(output_text)
         return output_text, score
+    
     
     # apply evaluation
     def eval(self, p, q, a, dimension):
-        reponse, score, thinking = None, 999, None
+        reponse, score = None, 999
         error_label = None
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         # apply prompt template
@@ -142,13 +158,13 @@ class ErrEval:
     
 
 if __name__ == "__main__":
-    # import os
-    # os.environ["CUDA_VISIBLE_DEVICES"] = '3'
+    #import os
+    #os.environ["CUDA_VISIBLE_DEVICES"] = '3'
 
-    p = 'Graptopetalum (leatherpetal) is a plant genus of the family "Crassulaceae".  They are perennial succulent plants and native to Mexico and Arizona.  They grow usually in a rosette.  There are around 19 species in this genus.&#10;Couroupita is a genus of flowering plants of Lecythidaceae family first described as a genus in 1775.  It is native to tropical South America and Central America.'
-    q = 'Are Graptopetalum plants native to Mexico and Arizona?'
-    a = 'yes'
-    dimension = 'answerability'
+    p = 'Another of the Egyptian groups which employed violence in their struggle for Islamic order was al-Gama"a al-Islamiyya (Islamic Group). Victims of their campaign against the Egyptian state in the 1990s included the head of the counter-terrorism police (Major General Raouf Khayrat), a parliamentary speaker (Rifaat al-Mahgoub), dozens of European tourists and Egyptian bystanders, and over 100 Egyptian police. Ultimately the campaign to overthrow the government was unsuccessful, and the major jihadi group, Jamaa Islamiya (or al-Gama"a al-Islamiyya), renounced violence in 2003. Other lesser known groups include the Islamic Liberation Party, Salvation from Hell and Takfir wal-Hijra, and these groups have variously been involved in activities such as attempted assassinations of political figures, arson of video shops and attempted takeovers of government buildings.'
+    q = 'Who were the victims of al-Gama"a al-Islamiyya"s campaign against the Egyptian state in the 1990s?'
+    a = 'political figures'
+    dimension = 'answer_consistency'
     config_path = './config.json'
     erreval = ErrEval(config_path)
     print(erreval.eval(p, q, a, dimension))

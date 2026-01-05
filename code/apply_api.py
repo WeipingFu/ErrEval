@@ -4,15 +4,16 @@ from tqdm import tqdm
 import pandas as pd
 from openai import OpenAI
 import re
-from utils import read_text, get_score
+from utils import read_text, get_score, load_json
 import anthropic
+import os
 
 
 
-
-def completion_gpt(model, messages, max_try=3, prt=False):
+def completion_gpt(model, messages, base_url, api_key, max_try=3, prt=False):
     client = OpenAI(
-        api_key='your api key'
+        base_url=base_url,
+        api_key=api_key
     )
     message = ''
     # try again when fail
@@ -34,17 +35,17 @@ def completion_gpt(model, messages, max_try=3, prt=False):
     return message
 
 
-def apply_claude(model, messages, max_try=3, prt=False):
+def apply_claude(model, messages, api_key, max_tokens=256, max_try=3, prt=False):
     client = anthropic.Anthropic(
         # defaults to os.environ.get("ANTHROPIC_API_KEY")
-        api_key="your api key",
+        api_key=api_key,
     )
     # try again when fail
     for i in range(max_try):
         try:
             response = client.messages.create(
                 model=model,
-                max_tokens=256,
+                max_tokens=max_tokens,
                 messages=messages
             )
             message = response.content
@@ -60,8 +61,9 @@ def apply_claude(model, messages, max_try=3, prt=False):
 
 
 class ApplyAPI:
-    def __init__(self):
+    def __init__(self, config_path):
         self.template = None
+        self.config = load_json(config_path)
     
     def get_error_info(self, dimension, error): 
         if not error:
@@ -113,13 +115,20 @@ class ApplyAPI:
         if not self.template:
             self.template = read_text(template_path)
         messages = self.get_messages(p, q, a, dimension, error, prt)
-        if 'gpt' in model:
-            res_message = completion_gpt(model, messages, prt=prt)
-        elif 'claude' in model:
-            res_message = apply_claude(model, messages, prt=prt)
+        if 'claude' in model:
+            res_message = apply_claude(
+                model, messages, 
+                api_key=self.config.get('api_key'), 
+                prt=prt
+            )
         else:
-            print('Model {} is not supported!'.format(model))
-            return res_message, score
+            res_message = completion_gpt(
+                model, messages, 
+                base_url=self.config.get('base_url'), 
+                api_key=self.config.get('api_key'), 
+                prt=prt
+            )
+        
         score = get_score(res_message)
         return res_message, score
 
@@ -153,17 +162,19 @@ if __name__ == "__main__":
     # model = 'claude-3-5-haiku-20241022'
     dimension = 'answer_consistency'
     error_col = 'pred_error'
-    template_path = './prompts/direct/{}.txt'.format(dimension)
+    config_path = './config.json'
+    cgpt = ApplyAPI(config_path)
+    template_path = os.path.join(cgpt.config.get("prompt_dir"), dimension+'.txt')
     if error_col:
-        template_path = './prompts/error_label/{}_error.txt'.format(dimension)
-    cgpt = ApplyAPI()
+        template_path = os.path.join(cgpt.config.get("prompt_dir"), dimension+'_error.txt')
+    
 
     # batch request
     iter_count = 3
     model_type = 'roberta'
     model_size = 'base'
     data_path = '../result/test/iter{}/{}-{}/qgeval-el.xlsx'.format(str(iter_count), model_type, model_size)
-    save_path = '../result/test/{}/iter{}/{}-{}/qgeval-{}-el.xlsx'.format(model.split('-')[0], str(iter_count), model_type,model_size,dimension)
+    save_path = '../result/test/{}/iter{}/{}-{}/qgeval-{}-el.xlsx'.format(model.split('-')[0], str(iter_count), model_type, model_size, dimension)
     df = pd.read_excel(data_path)
     df = df.fillna('')
     data = df.to_dict(orient='records')
