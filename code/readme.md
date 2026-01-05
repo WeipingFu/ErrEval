@@ -24,18 +24,18 @@ Modify `config.json` to configure the evaluator and error identifier settings ac
 This evaluation framework supports multiple evaluators and error identifier models. You can flexibly configure them via the `config.json` file. Below is a sample configuration along with detailed explanations of each field.
 ```json
 {
-    "evaluator_name": "gpt-4o",   
-    "evaluator_type": "close",
-    "evaluator_path": "",
-    "tokenizer_path": "",
-    "prompt_dir": "./prompts/direct/",
+    "evaluator_name": "llama",
+    "evaluator_type": "open",
+    "evaluator_path": "../model/llama-3-8b-instruct",
+    "tokenizer_path": "../model/llama-3-8b-instruct",
+    "prompt_dir": "./prompts/error_label/",
     "error_aware": true,
     "error_model_path": "../model/error_label/erreval_base",
     "error_tokenizer_path": "../model/error_label/erreval_base",
     "max_new_tokens": 256,
     "enable_thinking": false,
     "do_sample": true,
-    "base_url": "your base url",
+    "base_url": "your base url for request",
     "api_key": "your api key"
 }
 ```
